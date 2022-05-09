@@ -20,7 +20,7 @@ app.get('/cars', (req, res) => {
 app.get('/car/:id', (req, res) => {
     console.log(req.params);
     const id = parseInt(req.params.id);
-    const car = cars.find(c => c.id === id);
+    const car = inventory.find(c => c.id === id);
     res.send(car);
     console.log(car)
 });
@@ -28,8 +28,8 @@ app.get('/car/:id', (req, res) => {
 app.post('/car', (req, res) =>{
     console.log( 'request', req.body);
     const car = req.body;
-    car.id = cars.length + 1;
-    cars.push(car);
+    car.id = inventory.length + 1;
+    inventory.push(car);
     res.send(car);
 });
 
