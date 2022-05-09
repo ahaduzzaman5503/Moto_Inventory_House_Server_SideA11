@@ -11,33 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send("This is home place for and jo goom");
+    res.send("Server side is working");
 });
-app.get('/cars', (req, res) => {
-    res.send(cars);
-    console.log("data found")
-});
-
-app.get('/car/:id', (req, res) => {
-    console.log(req.params);
-    const id = parseInt(req.params.id);
-    const car = inventory.find(c => c.id === id);
-    res.send(car);
-    console.log(car)
-});
-
-app.post('/car', (req, res) =>{
-    console.log( 'request', req.body);
-    const car = req.body;
-    car.id = inventory.length + 1;
-    inventory.push(car);
-    res.send(car);
-});
-
-app.listen(port, () => {
-    console.log('Listening to port', port)
-} );
-
 
 const uri = `mongodb+srv://${process.env.INVENTORY_USER}:${process.env.INVENTORY_PASS}@cluster0.ecv1q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -68,3 +43,7 @@ async function run(){
 }
 
 run().catch(console.dir);
+
+app.listen(port, () => {
+    console.log('Listening to port', port)
+} );
