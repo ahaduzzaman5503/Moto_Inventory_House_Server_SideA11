@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 });
 app.get('/cars', (req, res) => {
     res.send(cars);
+    console.log("data found")
 });
 
 app.get('/car/:id', (req, res) => {
