@@ -13,44 +13,24 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send("Server side is working");
 });
-app.get('/cars', (req, res) => {
-    res.send(cars);
-    console.log("data found")
-});
 
-app.get('/car/:id', (req, res) => {
-    console.log(req.params);
-    const id = parseInt(req.params.id);
-    const car = inventory.find(c => c.id === id);
-    res.send(car);
-    console.log(car)
-});
-
-app.post('/car', (req, res) =>{
-    console.log( 'request', req.body);
-    const car = req.body;
-    car.id = inventory.length + 1;
-    inventory.push(car);
-    res.send(car);
-});
-
-
-
-
-const uri = `mongodb+srv://${process.env.INVENTORY_USER}:${process.env.INVENTORY_PASS}@cluster0.ecv1q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MOTODEAL_USER}:${process.env.MOTODEAL_PASS}@cluster0.uawktuq.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-async function run(){
+
+
+async function run() {
     try{
         await client.connect();
-        const inventoryCollection = client.db('motoInventory').collection('Inventory');
-        
+        console.log('db connect')
+        const inventoryCollection = client.db("motodeal").collection("inventory-motodeal");
+
         app.get('/inventory', async (req, res) => {
             const query = {};
             const cursor = inventoryCollection.find(query);
             const inventory = await cursor.toArray();
             res.send(inventory);
-        })
+        });
 
         app.get('/inventory/:id', async(req, res) =>{
             const id = req.params.id;
@@ -60,12 +40,13 @@ async function run(){
         })
 
     }
-    finally{
+    finally {
 
     }
 }
 
 run().catch(console.dir);
+
 
 app.listen(port, () => {
     console.log('Listening to port', port)
