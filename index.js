@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { query } = require('express');
 
 require('dotenv').config();
 const app = express();
@@ -16,8 +17,6 @@ app.get('/', (req, res) => {
 
 const uri = `mongodb+srv://${process.env.MOTODEAL_USER}:${process.env.MOTODEAL_PASS}@cluster0.uawktuq.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-
-
 
 async function run() {
     try{
@@ -55,6 +54,14 @@ async function run() {
             );
             res.send(result);
           });
+
+          //Delete product
+          app.delete("/inventory/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await inventoryCollection.deleteOne(filter);
+            res.send(result);
+          })
     }
     finally {
 
